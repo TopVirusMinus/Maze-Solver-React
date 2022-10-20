@@ -9,7 +9,9 @@ import { setMode } from "./Store/gridSlice";
 
 function App() {
   const dispatch = useDispatch();
-  const { isStart, isEnd } = useSelector((state) => state.gridSlice);
+  const { grid, numCols, numRows, startPos, endPos } = useSelector(
+    (state) => state.gridSlice
+  );
 
   const [res, setRes] = useState("");
   useEffect(() => {
@@ -39,7 +41,22 @@ function App() {
           handleClick={() => dispatch(setMode("d"))}
         />
       </Navbar>
-      <Button text="Visualize" img="settings-gears.png" />
+      <Button
+        text="Visualize"
+        img="settings-gears.png"
+        handleClick={() =>
+          axios
+            .post("http://localhost:8000/receiveInfo/", {
+              grid,
+              numCols,
+              numRows,
+              startPos,
+              endPos,
+            })
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err))
+        }
+      />
       <Grid />
     </div>
   );

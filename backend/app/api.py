@@ -1,6 +1,7 @@
+from typing import List
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -19,6 +20,21 @@ app.add_middleware(
 )
 
 
+res = {}
+
 @app.get("/", tags=["root"])
 async def read_root() -> dict:
     return {"message": "Path Finding Visualizer"}
+
+class BaseParam(BaseModel):
+    grid: List[list]
+    numCols: int
+    numRows: int
+    startPos: dict
+    endPos: dict
+    
+    
+@app.post("/receiveInfo/", status_code=201)
+async def receiveInfo(baseParam:BaseParam):
+    res = baseParam
+    print(res)
