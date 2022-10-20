@@ -6,7 +6,7 @@ import { setBorder, setStart, setEnd } from "../../Store/gridSlice";
 const Grid = () => {
   const dispatch = useDispatch();
   const { grid, numCols, mode } = useSelector((state) => state.gridSlice);
-
+  const type2col = { b: "#000", v: "#B9881D", s: "#368E88", d: "#BA9CB5" };
   return (
     <div
       className="grid"
@@ -18,17 +18,7 @@ const Grid = () => {
       {grid.map((rows, i) =>
         rows.map((col, j) => {
           let cellCol = "#DFF1FF";
-          if (grid[i][j].isBorder) {
-            cellCol = "#000";
-          } else if (grid[i][j].isVisited) {
-            cellCol = "#B9881D";
-          } else if (grid[i][j].isStart) {
-            cellCol = "#368E88";
-          } else if (grid[i][j].isEnd) {
-            cellCol = "#BA9CB5";
-          } else {
-            cellCol = "#DFF1FF";
-          }
+          cellCol = !type2col[grid[i][j]] ? "#DFF1FF" : type2col[grid[i][j]];
 
           return (
             <div
@@ -36,13 +26,13 @@ const Grid = () => {
               key={`${i}-${j}`}
               onClick={(e) => {
                 console.log(`Clicked ${i}-${j}`);
-                if (mode === "border") {
+                if (mode === "b") {
                   dispatch(setBorder({ i, j }));
                 }
-                if (mode === "start") {
+                if (mode === "s") {
                   dispatch(setStart({ i, j }));
                 }
-                if (mode === "end") {
+                if (mode === "d") {
                   dispatch(setEnd({ i, j }));
                 }
               }}

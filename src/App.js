@@ -26,24 +26,20 @@ function App() {
         <Button
           img="greater-than.png"
           text="Start"
-          handleClick={() => dispatch(setMode("start"))}
+          handleClick={() => dispatch(setMode("s"))}
         />
         <Button
           img="border.png"
           text="Border"
-          handleClick={() => dispatch(setMode("border"))}
+          handleClick={() => dispatch(setMode("b"))}
         />
         <Button
           img="flag.png"
-          text="End"
-          handleClick={() => dispatch(setMode("end"))}
+          text="Destination"
+          handleClick={() => dispatch(setMode("d"))}
         />
       </Navbar>
-      <Button
-        style={{ borderBottom: "2 rem" }}
-        text="Visualize"
-        img="settings-gears.png"
-      />
+      <Button text="Visualize" img="settings-gears.png" />
       <Grid />
     </div>
   );
