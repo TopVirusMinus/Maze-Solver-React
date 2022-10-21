@@ -42,6 +42,7 @@ class BaseParam(BaseModel):
 @app.post("/receiveInfo/", status_code=201)
 async def receiveInfo(baseParam:BaseParam):
     res = baseParam
+    print(res)
     grid = res.grid
     numRows = res.numRows
     numCols = res.numCols
