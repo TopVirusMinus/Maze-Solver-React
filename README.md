@@ -9,7 +9,7 @@ To install the modules
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-### `python backend/app/main.py`
+### `python backend/main.py`
 To start the backend server  [http://localhost:8000](http://localhost:8000) to view it in your browser.
 
 The page will reload when you make changes.\
