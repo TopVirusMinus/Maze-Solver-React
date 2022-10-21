@@ -27,9 +27,11 @@ numCols = -1
 startPos = {}
 endPos = {}
 
+
 @app.get("/", tags=["root"])
 async def read_root() -> dict:
     return {"message": "Path Finding Visualizer"}
+
 
 class BaseParam(BaseModel):
     grid: List[list]
@@ -37,15 +39,15 @@ class BaseParam(BaseModel):
     numRows: int
     startPos: dict
     endPos: dict
-    
-    
+
+
 @app.post("/receiveInfo/", status_code=201)
-async def receiveInfo(baseParam:BaseParam):
+async def receiveInfo(baseParam: BaseParam):
     res = baseParam
-    print(res)
+
     grid = res.grid
     numRows = res.numRows
     numCols = res.numCols
     startPos = res.startPos
     endPos = res.endPos
-    
+    print(res)
