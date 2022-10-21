@@ -21,6 +21,11 @@ app.add_middleware(
 
 
 res = {}
+grid = []
+numRows = -1
+numCols = -1
+startPos = {}
+endPos = {}
 
 @app.get("/", tags=["root"])
 async def read_root() -> dict:
@@ -37,4 +42,8 @@ class BaseParam(BaseModel):
 @app.post("/receiveInfo/", status_code=201)
 async def receiveInfo(baseParam:BaseParam):
     res = baseParam
-    print(res)
+    grid = res.grid
+    numRows = res.numRows
+    numCols = res.numCols
+    startPos = res.startPos
+    endPos = res.endPos
