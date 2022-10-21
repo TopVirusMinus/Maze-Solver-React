@@ -2,7 +2,7 @@ import "./App.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Grid from "./Components/Grid/Grid";
+import Grid, { type2col } from "./Components/Grid/Grid";
 import Button from "./Components/Button/Button";
 import Navbar from "./Components/Navbar/Navbar";
 import { setMode } from "./Store/gridSlice";
@@ -26,22 +26,23 @@ function App() {
       <h1>{res}</h1>
       <Navbar>
         <Button
-          img="greater-than.png"
+          solidCol={type2col["s"]}
           text="Start"
           handleClick={() => dispatch(setMode("s"))}
         />
         <Button
-          img="border.png"
+          solidCol={type2col["b"]}
           text="Border"
           handleClick={() => dispatch(setMode("b"))}
         />
         <Button
-          img="flag.png"
+          solidCol={type2col["d"]}
           text="Destination"
           handleClick={() => dispatch(setMode("d"))}
         />
       </Navbar>
       <Button
+        className="visualize"
         text="Visualize"
         img="settings-gears.png"
         handleClick={() =>
@@ -57,7 +58,9 @@ function App() {
             .catch((err) => console.log(err))
         }
       />
-      <Grid />
+      <div className="grid">
+        <Grid />
+      </div>
     </div>
   );
 }

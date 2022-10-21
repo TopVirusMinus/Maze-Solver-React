@@ -2,14 +2,20 @@ import { useState } from "react";
 import CSS from "./Grid.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setBorder, setStart, setEnd } from "../../Store/gridSlice";
+export const type2col = {
+  b: "#000",
+  v: "#B9881D",
+  s: "#368E88",
+  d: "#BA9CB5",
+};
 
 const Grid = () => {
   const dispatch = useDispatch();
   const { grid, numCols, mode } = useSelector((state) => state.gridSlice);
-  const type2col = { b: "#000", v: "#B9881D", s: "#368E88", d: "#BA9CB5" };
+
   return (
     <div
-      className="grid"
+      className={CSS.grid}
       style={{
         display: "grid",
         gridTemplateColumns: `repeat(${numCols}, 25px)`,

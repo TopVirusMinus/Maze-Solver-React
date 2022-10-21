@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-const numRows = 28;
-const numCols = 70;
+const numRows = 32;
+const numCols = 80;
 
 const grid = [];
 for (let i = 0; i < numRows; i++) {

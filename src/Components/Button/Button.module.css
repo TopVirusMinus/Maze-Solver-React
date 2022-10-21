@@ -1,5 +1,13 @@
 .optionButton {
-  display: flex;
-  justify-content: center;
+  width: 150px;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+}
+
+.identifier {
+  margin-right: 0.2rem;
+}
+
+span {
 }
