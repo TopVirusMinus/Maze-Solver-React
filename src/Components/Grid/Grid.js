@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import CSS from "./Grid.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setBorder, setStart, setEnd } from "../../Store/gridSlice";
+import { setBorder, setStart, setEnd, setHold } from "../../Store/gridSlice";
+import useLongPress from "../../hooks/useLongPress";
+
 export const type2col = {
   b: "#000",
   v: "#B9881D",
@@ -11,7 +13,29 @@ export const type2col = {
 
 const Grid = () => {
   const dispatch = useDispatch();
-  const { grid, numCols, mode } = useSelector((state) => state.gridSlice);
+  const { grid, numCols, mode, isHold } = useSelector(
+    (state) => state.gridSlice
+  );
+  const [counter, setCounter] = useState(100);
+  const intervalRef = useRef(null);
+
+  const startCounter = () => {
+    console.log("click");
+    dispatch(setHold(true));
+    if (intervalRef.current) return;
+    intervalRef.current = setInterval(() => {
+      setCounter((prevCounter) => prevCounter + 1);
+    }, 0);
+  };
+
+  const stopCounter = () => {
+    console.log("unclick");
+    dispatch(setHold(false));
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
 
   return (
     <div
@@ -28,8 +52,25 @@ const Grid = () => {
 
           return (
             <div
+              onMouseDown={startCounter}
+              onMouseUp={stopCounter}
               className={CSS.cell}
               key={`${i}-${j}`}
+              onMouseOver={() => {
+                if (!isHold) {
+                  return;
+                }
+                console.log(`Clicked ${i}-${j}`);
+                if (mode === "b") {
+                  dispatch(setBorder({ i, j }));
+                }
+                if (mode === "s") {
+                  dispatch(setStart({ i, j }));
+                }
+                if (mode === "d") {
+                  dispatch(setEnd({ i, j }));
+                }
+              }}
               onClick={(e) => {
                 console.log(`Clicked ${i}-${j}`);
                 if (mode === "b") {

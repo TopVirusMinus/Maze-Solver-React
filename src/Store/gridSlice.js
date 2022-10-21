@@ -20,11 +20,14 @@ const gridSlice = createSlice({
     numCols,
     numRows,
     mode: "b",
-    keyDown: false,
     startPos: { i: -1, j: -1 },
     endPos: { i: -1, j: -1 },
+    isHold: false,
   },
   reducers: {
+    setHold: (state, action) => {
+      state.isHold = action.payload;
+    },
     setMode: (state, action) => {
       state.mode = action.payload;
     },
@@ -57,5 +60,6 @@ const gridSlice = createSlice({
   },
 });
 
-export const { setMode, setBorder, setStart, setEnd } = gridSlice.actions;
+export const { setMode, setBorder, setStart, setEnd, setHold } =
+  gridSlice.actions;
 export default gridSlice.reducer;
