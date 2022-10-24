@@ -16,7 +16,7 @@ function App() {
   const [res, setRes] = useState("");
   useEffect(() => {
     axios.get("http://localhost:8000/").then((res) => {
-      console.log(res.data.message);
+      //console.log(res.data.message);
       setRes((prev) => res.data.message);
     });
   }, [res]);
@@ -41,6 +41,12 @@ function App() {
           handleClick={() => dispatch(setMode("d"))}
         />
       </Navbar>
+      <Navbar>
+        <select>
+          <option>BFS</option>
+          <option>DFS</option>
+        </select>
+      </Navbar>
       <Button
         className="visualize"
         text="Visualize"
@@ -54,6 +60,8 @@ function App() {
               startPos,
               endPos,
             })
+            .then((res) => console.log(res))
+            .then(() => axios.get("http://localhost:8000/getShortestPath/"))
             .then((res) => console.log(res))
             .catch((err) => console.log(err))
         }

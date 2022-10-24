@@ -20,7 +20,7 @@ const Grid = () => {
   const intervalRef = useRef(null);
 
   const startCounter = () => {
-    console.log("click");
+    //console.log("click");
     dispatch(setHold(true));
     if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
@@ -29,7 +29,7 @@ const Grid = () => {
   };
 
   const stopCounter = () => {
-    console.log("unclick");
+    //console.log("unclick");
     dispatch(setHold(false));
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -60,7 +60,7 @@ const Grid = () => {
                 if (!isHold) {
                   return;
                 }
-                console.log(`Clicked ${i}-${j}`);
+                //console.log(`Clicked ${i}-${j}`);
                 if (mode === "b") {
                   dispatch(setBorder({ i, j }));
                 }
@@ -72,7 +72,7 @@ const Grid = () => {
                 }
               }}
               onClick={(e) => {
-                console.log(`Clicked ${i}-${j}`);
+                //console.log(`Clicked ${i}-${j}`);
                 if (mode === "b") {
                   dispatch(setBorder({ i, j }));
                 }

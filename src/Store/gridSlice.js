@@ -11,7 +11,7 @@ for (let i = 0; i < numRows; i++) {
   );
 }
 
-console.log(grid);
+//console.log(grid);
 
 const gridSlice = createSlice({
   name: "grid",
@@ -49,7 +49,7 @@ const gridSlice = createSlice({
       state.startPos.j = action.payload.j;
     },
     setEnd(state, action) {
-      console.log(action.payload);
+      //console.log(action.payload);
       if (state.endPos.i !== -1 && state.endPos.j !== -1) {
         state.grid[state.endPos.i][state.endPos.j] = "e";
       }
