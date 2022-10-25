@@ -1,17 +1,23 @@
 import { useState, useRef } from "react";
 import CSS from "./Grid.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setBorder, setStart, setEnd, setHold } from "../../Store/gridSlice";
+import {
+  setBorder,
+  setStart,
+  setEnd,
+  setHold,
+  setCell,
+} from "../../Store/gridSlice";
 import useLongPress from "../../hooks/useLongPress";
 
 export const type2col = {
   b: "#000",
-  v: "#B9881D",
+  p: "#B9881D",
   s: "#368E88",
   d: "#BA9CB5",
 };
 
-const Grid = () => {
+const Grid = ({ visited, shortestPath }) => {
   const dispatch = useDispatch();
   const { grid, numCols, mode, isHold } = useSelector(
     (state) => state.gridSlice
@@ -37,6 +43,13 @@ const Grid = () => {
     }
   };
 
+  if (shortestPath) {
+    console.log("ueauau");
+  }
+
+  shortestPath.forEach((e) => {
+    dispatch(setCell({ idx: [e[0], e[1]], type: "p" }));
+  });
   return (
     <div
       className={CSS.grid}
@@ -49,7 +62,6 @@ const Grid = () => {
         rows.map((col, j) => {
           let cellCol = "#DFF1FF";
           cellCol = !type2col[grid[i][j]] ? "#DFF1FF" : type2col[grid[i][j]];
-
           return (
             <div
               onMouseDown={startCounter}

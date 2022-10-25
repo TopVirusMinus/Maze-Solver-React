@@ -21,6 +21,9 @@ function App() {
     });
   }, [res]);
 
+  const [shortestPath, setShortestPath] = useState([]);
+  const [visited, setVisited] = useState([]);
+
   return (
     <div className="App">
       <h1>{res}</h1>
@@ -62,13 +65,17 @@ function App() {
             })
             .then((res) => console.log(res))
             .then(() => axios.get("http://localhost:8000/getShortestPath/"))
-            .then((res) => console.log(res))
+            .then((res) => {
+              console.log(res.data[0]);
+              setShortestPath((prev) => res.data[0]);
+              setVisited((prev) => res.data[1]);
+            })
             .catch((err) => console.log(err))
         }
       />
 
       <div className="grid">
-        <Grid />
+        <Grid visited={visited} shortestPath={shortestPath} />
       </div>
     </div>
   );

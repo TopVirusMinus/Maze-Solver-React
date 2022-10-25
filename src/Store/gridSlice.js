@@ -28,6 +28,11 @@ const gridSlice = createSlice({
     setHold: (state, action) => {
       state.isHold = action.payload;
     },
+    setCell: (state, action) => {
+      console.log(action.payload);
+      state.grid[action.payload.idx[0]][action.payload.idx[1]] =
+        action.payload.type;
+    },
     setMode: (state, action) => {
       state.mode = action.payload;
     },
@@ -60,6 +65,6 @@ const gridSlice = createSlice({
   },
 });
 
-export const { setMode, setBorder, setStart, setEnd, setHold } =
+export const { setMode, setBorder, setStart, setEnd, setHold, setCell } =
   gridSlice.actions;
 export default gridSlice.reducer;

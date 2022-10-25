@@ -2,7 +2,7 @@ from typing import List
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from collections import deque, defaultdict
+from collections import deque
 
 app = FastAPI()
 
@@ -47,32 +47,31 @@ def getShortestPath(grid, numRows, numCols, startPos, endPos):
     
     s1 = startPos['i']
     s2 = startPos['j']
-    startPos = (s1,s2)    
+    startPos = (startPos['i'],startPos['j'])    
     e1 = endPos['i']
     e2 = endPos['j']
-    endPos = (e1,e2)
-    
-    def foo():
-        return False
-    
+    endPos = (endPos['i'],endPos['j'])
+
     q = deque([(s1, s2)])
-    visited = defaultdict(foo)
+    visited = set()
     backtrack = {}
     
-    print(grid[4][34])
     while q:
         r,c  = q.popleft()  
-        visited[(r,c)] = True
+        visited.add((r,c))
+        print((r,c))
+        #visited[(r,c)] = True
         if grid[r][c] == 'd':
             print(r,c)
+            print("-------------------")
             break
             
         for i in range(4):
             nr, nc = r + DIR[i], c+DIR[i + 1]
-            if nr < 0 or nr == numRows or nc < 0 or nc == numCols or grid[nr][nc] == 'b' or visited[(nr,nc)]:
-                continue
-            q.append((nr, nc))
-            backtrack[(nr,nc)] = (r,c) 
+            if nr >= 0 and nr < numRows and nc >= 0 and nc < numCols and (grid[nr][nc] == 'e' or grid[nr][nc] == 'd')  and ((nr,nc)) not in visited:
+                q.append((nr, nc))
+                visited.add((nr,nc))
+                backtrack[(nr,nc)] = (r,c) 
 
     #print(backtrack)   
 
