@@ -56,23 +56,29 @@ def getShortestPath(grid, numRows, numCols, startPos, endPos):
     visitedList = []
     backtrack = {}
 
-    while q:
+    stop = False
+    while q and not stop:
         for _ in range(len(q)):
             r,c  = q.popleft()  
             visited.add((r,c))
             #print((r,c))
             #visited[(r,c)] = True
-            if grid[r][c] == 'd':
-                print(r,c)
-                print("-------------------")
-                break
-                
             for i in range(4):
                 nr, nc = r + DIR[i], c+DIR[i + 1]
+                visitedList.append((nr,nc))
+                
+                
                 if nr >= 0 and nr < numRows and nc >= 0 and nc < numCols and (grid[nr][nc] == 'e' or grid[nr][nc] == 'd')  and ((nr,nc)) not in visited:
-                    q.insert(0,(nr, nc))
+                    q.append((nr, nc))
                     visited.add((nr,nc))
                     backtrack[(nr,nc)] = (r,c) 
+                    if grid[nr][nc] == 'd':
+                        stop = True
+                        print(r,c)
+                        print("-------------------")
+                        break
+            if stop:
+                break
 
     #print(backtrack)   
 

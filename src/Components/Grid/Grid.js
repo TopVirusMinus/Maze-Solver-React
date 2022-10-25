@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import CSS from "./Grid.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,7 +20,7 @@ export const type2col = {
 
 const Grid = ({ visited, shortestPath }) => {
   const dispatch = useDispatch();
-  const { grid, numCols, mode, isHold } = useSelector(
+  const { grid, numCols, mode, isHold, startPos, endPos } = useSelector(
     (state) => state.gridSlice
   );
   const [counter, setCounter] = useState(100);
@@ -48,17 +48,25 @@ const Grid = ({ visited, shortestPath }) => {
     console.log("ueauau");
   }
 
-  // visited.forEach((e) => {
-  //   setTimeout(() => {
-  //     dispatch(setCell({ idx: [e[0], e[1]], type: "v" }));
-  //   }, 0);
-  // });
+  useEffect(() => {
+    visited.forEach((e) => {
+      setTimeout(() => {
+        if (e[0] !== startPos["i"] || e[1] !== startPos["j"])
+          if (e[0] !== endPos["i"] || e[1] !== endPos["j"]) {
+            dispatch(setCell({ idx: [e[0], e[1]], type: "v" }));
+          }
+      }, 0);
+    });
+  }, [dispatch, endPos, startPos, visited]);
 
-  shortestPath.forEach((e) => {
-    setTimeout(() => {
-      dispatch(setCell({ idx: [e[0], e[1]], type: "p" }));
-    }, 0);
-  });
+  useEffect(() => {
+    shortestPath.forEach((e) => {
+      setTimeout(() => {
+        dispatch(setCell({ idx: [e[0], e[1]], type: "p" }));
+      }, 0);
+    });
+  }, [dispatch, endPos, startPos, shortestPath]);
+
   return (
     <div
       className={CSS.grid}
