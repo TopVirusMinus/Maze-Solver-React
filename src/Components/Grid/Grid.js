@@ -53,7 +53,9 @@ const Grid = ({ visited, shortestPath }) => {
       setTimeout(() => {
         if (e[0] !== startPos["i"] || e[1] !== startPos["j"])
           if (e[0] !== endPos["i"] || e[1] !== endPos["j"]) {
-            dispatch(setCell({ idx: [e[0], e[1]], type: "v" }));
+            if (grid[e[0]][e[1]] !== "b") {
+              dispatch(setCell({ idx: [e[0], e[1]], type: "v" }));
+            }
           }
       }, 0);
     });
