@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from collections import deque
-
 app = FastAPI()
 
 origins = [
@@ -54,35 +53,37 @@ def getShortestPath(grid, numRows, numCols, startPos, endPos):
 
     q = deque([(s1, s2)])
     visited = set()
+    visitedList = []
     backtrack = {}
-    
+
     while q:
-        r,c  = q.popleft()  
-        visited.add((r,c))
-        print((r,c))
-        #visited[(r,c)] = True
-        if grid[r][c] == 'd':
-            print(r,c)
-            print("-------------------")
-            break
-            
-        for i in range(4):
-            nr, nc = r + DIR[i], c+DIR[i + 1]
-            if nr >= 0 and nr < numRows and nc >= 0 and nc < numCols and (grid[nr][nc] == 'e' or grid[nr][nc] == 'd')  and ((nr,nc)) not in visited:
-                q.append((nr, nc))
-                visited.add((nr,nc))
-                backtrack[(nr,nc)] = (r,c) 
+        for _ in range(len(q)):
+            r,c  = q.popleft()  
+            visited.add((r,c))
+            #print((r,c))
+            #visited[(r,c)] = True
+            if grid[r][c] == 'd':
+                print(r,c)
+                print("-------------------")
+                break
+                
+            for i in range(4):
+                nr, nc = r + DIR[i], c+DIR[i + 1]
+                if nr >= 0 and nr < numRows and nc >= 0 and nc < numCols and (grid[nr][nc] == 'e' or grid[nr][nc] == 'd')  and ((nr,nc)) not in visited:
+                    q.insert(0,(nr, nc))
+                    visited.add((nr,nc))
+                    backtrack[(nr,nc)] = (r,c) 
 
     #print(backtrack)   
 
     shortest_path = []
     while backtrack[endPos] != startPos:
-        print(endPos, backtrack[endPos])
+        #print(endPos, backtrack[endPos])
         endPos = backtrack[endPos]
         shortest_path.append(endPos)
 
-    print(shortest_path[::-1])
-    return shortest_path[::-1], list(visited)
+    #print(shortest_path[::-1])
+    return shortest_path[::-1], visitedList
             
     
     
@@ -107,7 +108,7 @@ async def receiveInfo(baseParam: BaseParam):
     numCols = res.numCols
     startPos = res.startPos
     endPos = res.endPos
-    print(res)    
+    #print(res)    
 
     
 

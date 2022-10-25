@@ -15,6 +15,7 @@ export const type2col = {
   p: "#B9881D",
   s: "#368E88",
   d: "#BA9CB5",
+  v: "gray",
 };
 
 const Grid = ({ visited, shortestPath }) => {
@@ -47,8 +48,16 @@ const Grid = ({ visited, shortestPath }) => {
     console.log("ueauau");
   }
 
+  // visited.forEach((e) => {
+  //   setTimeout(() => {
+  //     dispatch(setCell({ idx: [e[0], e[1]], type: "v" }));
+  //   }, 0);
+  // });
+
   shortestPath.forEach((e) => {
-    dispatch(setCell({ idx: [e[0], e[1]], type: "p" }));
+    setTimeout(() => {
+      dispatch(setCell({ idx: [e[0], e[1]], type: "p" }));
+    }, 0);
   });
   return (
     <div
