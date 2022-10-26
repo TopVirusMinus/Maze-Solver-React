@@ -12,10 +12,10 @@ import useLongPress from "../../hooks/useLongPress";
 
 export const type2col = {
   b: "#000",
-  p: "#B9881D",
+  p: "#FFD300",
   s: "#368E88",
   d: "#BA9CB5",
-  v: "gray",
+  v: "#AAA",
 };
 
 const Grid = ({ visited, shortestPath }) => {
@@ -49,6 +49,11 @@ const Grid = ({ visited, shortestPath }) => {
   }
 
   useEffect(() => {
+    dispatch(setCell({ idx: [2, 23], type: "s" }));
+    dispatch(setCell({ idx: [5, 33], type: "d" }));
+  }, []);
+
+  useEffect(() => {
     visited.forEach((e) => {
       setTimeout(() => {
         if (e[0] !== startPos["i"] || e[1] !== startPos["j"])
@@ -70,61 +75,64 @@ const Grid = ({ visited, shortestPath }) => {
   }, [dispatch, endPos, startPos, shortestPath]);
 
   return (
-    <div
-      className={CSS.grid}
-      style={{
-        display: "grid",
-        gridTemplateColumns: `repeat(${numCols}, 25px)`,
-      }}
-    >
-      {grid.map((rows, i) =>
-        rows.map((col, j) => {
-          let cellCol = "#DFF1FF";
-          cellCol = !type2col[grid[i][j]] ? "#DFF1FF" : type2col[grid[i][j]];
-          return (
-            <div
-              onMouseDown={startCounter}
-              onMouseUp={stopCounter}
-              className={CSS.cell}
-              key={`${i}-${j}`}
-              onMouseOver={() => {
-                if (!isHold) {
-                  return;
-                }
-                //console.log(`Clicked ${i}-${j}`);
-                if (mode === "b") {
-                  dispatch(setBorder({ i, j }));
-                }
-                if (mode === "s") {
-                  dispatch(setStart({ i, j }));
-                }
-                if (mode === "d") {
-                  dispatch(setEnd({ i, j }));
-                }
-              }}
-              onClick={(e) => {
-                //console.log(`Clicked ${i}-${j}`);
-                if (mode === "b") {
-                  dispatch(setBorder({ i, j }));
-                }
-                if (mode === "s") {
-                  dispatch(setStart({ i, j }));
-                }
-                if (mode === "d") {
-                  dispatch(setEnd({ i, j }));
-                }
-              }}
-              style={{
-                width: 25,
-                height: 25,
-                border: "1px solid lightblue",
-                backgroundColor: cellCol,
-              }}
-            ></div>
-          );
-        })
-      )}
-    </div>
+    <>
+      {!shortestPath.length && visited.length > 0 && <h1>No Path!</h1>}
+      <div
+        className={CSS.grid}
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${numCols}, 25px)`,
+        }}
+      >
+        {grid.map((rows, i) =>
+          rows.map((col, j) => {
+            let cellCol = "#DFF1FF";
+            cellCol = !type2col[grid[i][j]] ? "#DFF1FF" : type2col[grid[i][j]];
+            return (
+              <div
+                onMouseDown={startCounter}
+                onMouseUp={stopCounter}
+                className={CSS.cell}
+                key={`${i}-${j}`}
+                onMouseOver={() => {
+                  if (!isHold) {
+                    return;
+                  }
+                  //console.log(`Clicked ${i}-${j}`);
+                  if (mode === "b") {
+                    dispatch(setBorder({ i, j }));
+                  }
+                  if (mode === "s") {
+                    dispatch(setStart({ i, j }));
+                  }
+                  if (mode === "d") {
+                    dispatch(setEnd({ i, j }));
+                  }
+                }}
+                onClick={(e) => {
+                  //console.log(`Clicked ${i}-${j}`);
+                  if (mode === "b") {
+                    dispatch(setBorder({ i, j }));
+                  }
+                  if (mode === "s") {
+                    dispatch(setStart({ i, j }));
+                  }
+                  if (mode === "d") {
+                    dispatch(setEnd({ i, j }));
+                  }
+                }}
+                style={{
+                  width: 25,
+                  height: 25,
+                  border: "1px solid lightblue",
+                  backgroundColor: cellCol,
+                }}
+              ></div>
+            );
+          })
+        )}
+      </div>
+    </>
   );
 };
 

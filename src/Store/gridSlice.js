@@ -20,8 +20,8 @@ const gridSlice = createSlice({
     numCols,
     numRows,
     mode: "b",
-    startPos: { i: -1, j: -1 },
-    endPos: { i: -1, j: -1 },
+    startPos: { i: 2, j: 23 },
+    endPos: { i: 5, j: 33 },
     isHold: false,
   },
   reducers: {

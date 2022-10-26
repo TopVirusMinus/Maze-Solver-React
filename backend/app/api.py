@@ -68,7 +68,7 @@ def getShortestPath(grid, numRows, numCols, startPos, endPos):
                 visitedList.append((nr,nc))
                 
                 
-                if nr >= 0 and nr < numRows and nc >= 0 and nc < numCols and (grid[nr][nc] == 'e' or grid[nr][nc] == 'd')  and ((nr,nc)) not in visited:
+                if nr >= 0 and nr < numRows and nc >= 0 and nc < numCols and grid[nr][nc] != 'b'  and ((nr,nc)) not in visited:
                     q.append((nr, nc))
                     visited.add((nr,nc))
                     backtrack[(nr,nc)] = (r,c) 
@@ -83,13 +83,15 @@ def getShortestPath(grid, numRows, numCols, startPos, endPos):
     #print(backtrack)   
 
     shortest_path = []
-    while backtrack[endPos] != startPos:
-        #print(endPos, backtrack[endPos])
-        endPos = backtrack[endPos]
-        shortest_path.append(endPos)
-
-    #print(shortest_path[::-1])
-    return shortest_path[::-1], visitedList
+    if endPos in backtrack.keys():
+        while backtrack[endPos] != startPos:
+            #print(endPos, backtrack[endPos])
+            endPos = backtrack[endPos]
+            shortest_path.append(endPos)
+        return shortest_path[::-1], visitedList
+    
+    print(shortest_path[::-1])
+    return [], visitedList
             
     
     
