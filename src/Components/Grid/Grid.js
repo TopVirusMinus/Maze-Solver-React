@@ -11,11 +11,11 @@ import {
 import useLongPress from "../../hooks/useLongPress";
 
 export const type2col = {
-  b: "#000",
-  p: "#FFD300",
-  s: "#368E88",
-  d: "#BA9CB5",
-  v: "#AAA",
+  b: "#011627",
+  p: "#EDFF7A",
+  s: "#98D831",
+  d: "#FF1F3D",
+  v: "#4B88A2",
 };
 
 const Grid = ({ visited, shortestPath }) => {
@@ -45,7 +45,7 @@ const Grid = ({ visited, shortestPath }) => {
   };
 
   if (shortestPath) {
-    console.log("ueauau");
+    //console.log("ueauau");
   }
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const Grid = ({ visited, shortestPath }) => {
           }
       }, 0);
     });
-  }, [dispatch, endPos, startPos, visited]);
+  }, [dispatch, visited]);
 
   useEffect(() => {
     shortestPath.forEach((e) => {
@@ -72,7 +72,7 @@ const Grid = ({ visited, shortestPath }) => {
         dispatch(setCell({ idx: [e[0], e[1]], type: "p" }));
       }, 0);
     });
-  }, [dispatch, endPos, startPos, shortestPath]);
+  }, [dispatch, shortestPath]);
 
   return (
     <>
@@ -86,8 +86,8 @@ const Grid = ({ visited, shortestPath }) => {
       >
         {grid.map((rows, i) =>
           rows.map((col, j) => {
-            let cellCol = "#DFF1FF";
-            cellCol = !type2col[grid[i][j]] ? "#DFF1FF" : type2col[grid[i][j]];
+            let cellCol = "#FDFFFC";
+            cellCol = !type2col[grid[i][j]] ? "#FDFFFC" : type2col[grid[i][j]];
             return (
               <div
                 onMouseDown={startCounter}

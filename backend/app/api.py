@@ -1,3 +1,4 @@
+from tracemalloc import start
 from typing import List
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,22 +27,86 @@ numRows = -1
 numCols = -1
 startPos = {}
 endPos = {}
-
+algorithm = "bfs"
 
 @app.get("/", tags=["root"])
 async def read_root() -> dict:
     return {"message": "Path Finding Visualizer"}
 
 
-class BaseParam(BaseModel):
-    grid: List[list]
-    numCols: int
-    numRows: int
-    startPos: dict
-    endPos: dict
+def getPathDFS(grid, numRows, numCols, startPos, endPos):
+    dRow = [0, 1, 0, -1]
+    dCol = [-1, 0, 1, 0]
+    vis = [[False for i in range(len(grid[0]))] for j in range(len(grid))]
     
+    def isValid(row, col, vis):
+        if (row < 0 or col < 0 or row >= numRows or col >= numCols):
+            return False
     
-def getShortestPath(grid, numRows, numCols, startPos, endPos):
+        print(numRows, numCols)
+        print(row, col)
+        print("----")
+        if (vis[row][col]):
+            return False
+        if (grid[row][col]=='b'):
+            return False
+
+        return True
+    
+    st = []
+    path=[]
+    visitedpath=[]
+    st.append([startPos['i'], startPos['j'], 0])
+    var=1
+    while st:
+        # Pop the top pair
+        curr = st.pop(-1)
+        row,col,index = curr
+    
+        if not isValid(row, col, vis):
+            continue
+        print(grid[row][col])
+        print(index)
+        print("============")
+        visitedpath.append([row, col,index+1])
+
+        vis[row][col] = True
+        if (grid[row][col]=='d'):
+            print(grid[row][col])
+            break
+        #print(grid[row][col], end = " ")
+        for i in range(4):
+            adjx = row + dRow[i]
+            adjy = col + dCol[i]
+            if isValid(adjx, adjy, vis):
+                st.append([adjx, adjy,index+1])
+        var+=1
+    #visitedpath.reverse()
+    search=visitedpath[-1][2]
+    print("\\\\\\\\\\\\\\\\")
+    print (search)
+    for i in range(len(visitedpath)-1,-1,-1):
+        instance=visitedpath[i]
+        #print(instance[2])
+        if(instance[2]==search):
+            path.insert(0,instance)
+            search=search-1
+    #path.reverse()
+    filtered_path = []
+    for p in path:
+        filtered_path.append(tuple(p[0:-1]))
+    print(filtered_path)
+    print("----")
+    #print(visitedpath)
+    filtered_visitedpath = []
+    for v in visitedpath:
+        filtered_visitedpath.append(tuple(v[0:-1]))
+    print(filtered_visitedpath)
+    #print(st)
+    return filtered_path[1:-1], filtered_visitedpath
+    #print(st)
+
+def getShortestPathBFS(grid, numRows, numCols, startPos, endPos):
     DIR = [0, 1, 0, -1, 0]
     
     s1 = startPos['i']
@@ -90,33 +155,47 @@ def getShortestPath(grid, numRows, numCols, startPos, endPos):
             shortest_path.append(endPos)
         return shortest_path[::-1], visitedList
     
-    print(shortest_path[::-1])
+    print("lol")
     return [], visitedList
             
     
     
 @app.get("/getShortestPath")
 async def getShortestPathApi():
-    return getShortestPath(grid, numRows, numCols, startPos, endPos)
+    global algorithm
+    if algorithm == "bfs":
+        return getShortestPathBFS(grid, numRows, numCols, startPos, endPos)
+    elif algorithm == "dfs":
+        return getPathDFS(grid, numRows, numCols, startPos, endPos)
+        
 
-    
+class BaseParam(BaseModel):
+    grid: List[list]
+    numCols: int
+    numRows: int
+    startPos: dict
+    endPos: dict
+    algorithm: str
+
 @app.post("/receiveInfo/", status_code=201)
 async def receiveInfo(baseParam: BaseParam):
     res = baseParam
+    print(res)
 
     global grid
     global numRows
     global numCols
     global startPos
     global endPos
+    global algorithm
     
-    
+    print(res)    
     grid = res.grid
     numRows = res.numRows
     numCols = res.numCols
     startPos = res.startPos
     endPos = res.endPos
-    #print(res)    
+    algorithm = res.algorithm
 
     
 

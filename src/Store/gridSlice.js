@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-const numRows = 32;
-const numCols = 80;
+const numRows = 28;
+const numCols = 75;
 
 const grid = [];
 for (let i = 0; i < numRows; i++) {
@@ -23,13 +23,14 @@ const gridSlice = createSlice({
     startPos: { i: 2, j: 23 },
     endPos: { i: 5, j: 33 },
     isHold: false,
+    algorithm: "bfs",
   },
   reducers: {
     setHold: (state, action) => {
       state.isHold = action.payload;
     },
     setCell: (state, action) => {
-      console.log(action.payload);
+      //console.log(action.payload);
       state.grid[action.payload.idx[0]][action.payload.idx[1]] =
         action.payload.type;
     },
