@@ -24,6 +24,7 @@ function App() {
   const [shortestPath, setShortestPath] = useState([]);
   const [visited, setVisited] = useState([]);
   const [algorithm, setAlgorithm] = useState("bfs");
+  const [directionPath, setDirectionPath] = useState([]);
 
   const onSelectChange = (e) => {
     setAlgorithm(() => e.target.value);
@@ -88,6 +89,7 @@ function App() {
               //console.log(res.data[0]);
               setShortestPath((prev) => res.data[0]);
               setVisited((prev) => res.data[1]);
+              setDirectionPath((prev) => res.data[2]);
             })
             .catch((err) => console.log(err));
         }}
@@ -99,7 +101,12 @@ function App() {
         handleClick={() => resetGrid()}
       />
       <div className="grid">
-        <Grid className="grid" visited={visited} shortestPath={shortestPath} />
+        <Grid
+          className="grid"
+          visited={visited}
+          shortestPath={shortestPath}
+          directionPath={directionPath}
+        />
       </div>
     </div>
   );

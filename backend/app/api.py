@@ -29,12 +29,27 @@ startPos = {}
 endPos = {}
 algorithm = "bfs"
 
+def checkDirection(prev, curr):
+    print(prev,curr)
+    if prev[0] > curr[0]:
+        return "up"
+    elif prev[0] < curr[0]:
+        return "down"
+    elif prev[1] > curr[1]:
+        return "left"
+    elif prev[1] < curr[1]:
+        return "right"
+    else:
+        return "empty"
+
 @app.get("/", tags=["root"])
 async def read_root() -> dict:
     return {"message": "Path Finding Visualizer"}
 
 
 def getPathDFS(grid, numRows, numCols, startPos, endPos):
+    e1 = endPos['i']
+    e2 = endPos['j']
     dRow = [0, 1, 0, -1]
     dCol = [-1, 0, 1, 0]
     vis = [[False for i in range(len(grid[0]))] for j in range(len(grid))]
@@ -103,7 +118,14 @@ def getPathDFS(grid, numRows, numCols, startPos, endPos):
         filtered_visitedpath.append(tuple(v[0:-1]))
     print(filtered_visitedpath)
     #print(st)
-    return filtered_path[1:-1], filtered_visitedpath
+    
+    directionPath = []
+    for i in range(len(filtered_visitedpath) - 1):
+        prev, curr = filtered_visitedpath[i],filtered_visitedpath[i+1]
+        directionPath.append(checkDirection(prev, curr))
+        
+        directionPath.append(checkDirection(filtered_visitedpath[-1], (e1,e2)))
+    return filtered_path[1:-1], filtered_visitedpath, directionPath
     #print(st)
 
 def getShortestPathBFS(grid, numRows, numCols, startPos, endPos):
@@ -146,14 +168,21 @@ def getShortestPathBFS(grid, numRows, numCols, startPos, endPos):
                 break
 
     #print(backtrack)   
-
+        
     shortest_path = []
     if endPos in backtrack.keys():
         while backtrack[endPos] != startPos:
             #print(endPos, backtrack[endPos])
             endPos = backtrack[endPos]
             shortest_path.append(endPos)
-        return shortest_path[::-1], visitedList
+        shortest_path = shortest_path[::-1]
+        directionPath = []
+        
+        for i in range(len(shortest_path) - 1):
+            directionPath.append(checkDirection(shortest_path[i], shortest_path[i+1]))
+        
+        directionPath.append(checkDirection(shortest_path[-1], (e1,e2)))
+        return shortest_path, visitedList, directionPath
     
     print("lol")
     return [], visitedList

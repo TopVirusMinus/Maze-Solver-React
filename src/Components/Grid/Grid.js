@@ -10,15 +10,36 @@ import {
 } from "../../Store/gridSlice";
 import useLongPress from "../../hooks/useLongPress";
 
+function isItemInArray(array, item) {
+  for (var i = 0; i < array.length; i++) {
+    // This if statement depends on the format of your array
+    if (array[i][0] === item[0] && array[i][1] === item[1]) {
+      return i; // Found it
+    }
+  }
+  return -1; // Not found
+}
+
 export const type2col = {
   b: "#011627",
-  p: "#EDFF7A",
+  p: "#EDF170",
   s: "#98D831",
   d: "#FF1F3D",
   v: "#4B88A2",
 };
 
-const Grid = ({ visited, shortestPath }) => {
+const type2content = {
+  s: "🐀",
+  d: "🧀",
+  v: "",
+  up: "&#8593;",
+  right: "&#8594;",
+  down: "&#8595;",
+  left: "&#8592;",
+  empty: "",
+};
+const Grid = ({ visited, shortestPath, directionPath }) => {
+  console.log(directionPath);
   const dispatch = useDispatch();
   const { grid, numCols, mode, isHold, startPos, endPos } = useSelector(
     (state) => state.gridSlice
@@ -64,15 +85,16 @@ const Grid = ({ visited, shortestPath }) => {
           }
       }, 0);
     });
-  }, [dispatch, visited]);
+  }, [visited]);
 
   useEffect(() => {
+    console.log(shortestPath);
     shortestPath.forEach((e) => {
       setTimeout(() => {
         dispatch(setCell({ idx: [e[0], e[1]], type: "p" }));
       }, 0);
     });
-  }, [dispatch, shortestPath]);
+  }, [shortestPath]);
 
   return (
     <>
@@ -87,7 +109,18 @@ const Grid = ({ visited, shortestPath }) => {
         {grid.map((rows, i) =>
           rows.map((col, j) => {
             let cellCol = "#FDFFFC";
+            let cellContent = "";
+            let cellContentColor = "#FDFFFC";
+            if (grid[i][j] === "p") {
+              cellContentColor = "#333";
+            }
             cellCol = !type2col[grid[i][j]] ? "#FDFFFC" : type2col[grid[i][j]];
+            cellContent = type2content[grid[i][j]];
+            if (grid[i][j] === "p") {
+              let pathIndex = isItemInArray(shortestPath, [i, j]);
+              console.log(pathIndex);
+              cellContent = type2content[directionPath[pathIndex]];
+            }
             return (
               <div
                 onMouseDown={startCounter}
@@ -126,8 +159,15 @@ const Grid = ({ visited, shortestPath }) => {
                   height: 25,
                   border: "1px solid lightblue",
                   backgroundColor: cellCol,
+                  color: cellContentColor,
                 }}
-              ></div>
+              >
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: cellContent,
+                  }}
+                />
+              </div>
             );
           })
         )}
