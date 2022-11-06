@@ -92,7 +92,7 @@ const Grid = ({ visited, shortestPath, directionPath }) => {
     shortestPath.forEach((e) => {
       setTimeout(() => {
         dispatch(setCell({ idx: [e[0], e[1]], type: "p" }));
-      }, 0);
+      }, 1);
     });
   }, [shortestPath]);
 
@@ -160,6 +160,9 @@ const Grid = ({ visited, shortestPath, directionPath }) => {
                   border: "1px solid lightblue",
                   backgroundColor: cellCol,
                   color: cellContentColor,
+                  transition: "all .5s ease-in-out",
+                  WebkitTransition: "all .5s ease-in-out",
+                  MozTransition: "all .5s ease-in-out",
                 }}
               >
                 <span

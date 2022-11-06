@@ -6,6 +6,7 @@
   -ms-user-select: none;
   user-select: none;
 }
+
 .cell:hover {
   transform: scale(1.1);
 }
